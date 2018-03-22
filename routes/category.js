@@ -6,7 +6,17 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const categories = await Category.find({});
-    res.send(JSON.stringify(categories));
+    res.send(categories);
+  } catch (error) {
+    res.statusCode(500).send(error.toString());
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const categories = await Category.findById(id);
+    res.send(categories);
   } catch (error) {
     res.statusCode(500).send(error.toString());
   }
@@ -14,25 +24,30 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { body } = req;
-    const category = new Category(body);
+    const category = new Category(req.body);
     category.timestamp = Date.now();
     const newCategory = await category.save();
-    res.send(JSON.stringify(newCategory));
+    res.send(newCategory);
   } catch (error) {
     res.statusCode(500).send(error.toString());
   }
 });
 
-router.put('/', (req, res) => {
-
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const category = req.body;
+    const result = await Category.findByIdAndUpdate(id, category, { new: true });
+    res.send(result);
+  } catch (error) {
+    res.statusCode(500).send(error.toString());
+  }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const { body } = req;
-    const { _id } = body;
-    const result = await Category.findByIdAndRemove(_id);
+    const { id } = req.params;
+    const result = await Category.findByIdAndRemove(id);
     res.send(result);
   } catch (error) {
     res.statusCode(500).send(error.toString());

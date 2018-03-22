@@ -6,6 +6,7 @@ const categoryRouter = require('./routes/category');
 const app = express();
 const port = 7777;
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/category', categoryRouter);
