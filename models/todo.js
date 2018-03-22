@@ -5,6 +5,7 @@ const todoSchema = new mongoose.Schema({
   description: String,
   done: Boolean,
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categoty' },
+  timestamp: Date,
 });
 
 const todoModel = mongoose.model('todo', todoSchema);
