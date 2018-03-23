@@ -3,11 +3,12 @@ const Todo = require('../models/todo');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-
+    const todo = await Todo.find({});
+    res.send(todo);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
@@ -18,23 +19,27 @@ router.post('/', async (req, res) => {
     const newTodo = await todo.save();
     res.send(newTodo);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const result = await Todo.findByIdAndUpdate(id, req.body, { new: true });
+    res.send(result);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const result = await Todo.findByIdAndRemove(id);
+    res.send(result);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 

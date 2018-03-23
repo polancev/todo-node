@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     const categories = await Category.find({});
     res.send(categories);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
     const categories = await Category.findById(id);
     res.send(categories);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
@@ -29,18 +29,17 @@ router.post('/', async (req, res) => {
     const newCategory = await category.save();
     res.send(newCategory);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const category = req.body;
-    const result = await Category.findByIdAndUpdate(id, category, { new: true });
+    const result = await Category.findByIdAndUpdate(id, req.body, { new: true });
     res.send(result);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
@@ -50,7 +49,7 @@ router.delete('/:id', async (req, res) => {
     const result = await Category.findByIdAndRemove(id);
     res.send(result);
   } catch (error) {
-    res.statusCode(500).send(error.toString());
+    res.status(500).send(error.toString());
   }
 });
 
