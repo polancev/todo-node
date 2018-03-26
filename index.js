@@ -27,8 +27,8 @@ app.listen(port, () => `Listerning on port ${port}`);
 
 // graceful shutdown
 ['SIGINT', 'SIGTERM'].forEach((signal) => {
-  process.on(signal, () => {
-    mongoose.disconnect();
+  process.on(signal, async () => {
+    await mongoose.disconnect();
     process.exit();
   });
 });
