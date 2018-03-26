@@ -13,6 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  next();
+})
 
 app.use('/category', categoryRouter);
 app.use('/todo', todoRouter);
@@ -25,5 +29,6 @@ app.listen(port, () => `Listerning on port ${port}`);
 ['SIGINT', 'SIGTERM'].forEach((signal) => {
   process.on(signal, () => {
     mongoose.disconnect();
+    process.exit();
   });
 });
