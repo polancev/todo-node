@@ -1,3 +1,8 @@
+import axios from 'axios';
+// import { createAction } from 'typesafe-actions';
+import { createAction } from 'redux-actions';
+import { CategoryI } from '../types/Category';
+
 export enum CategoryTypeKeys {
   CATEGORY_LOAD   = 'CATEGORY_LOAD',
   CATEGORY_ADD    = 'CATEGORY_ADD',
@@ -8,7 +13,18 @@ export enum CategoryTypeKeys {
 
 export interface CategoryLoadAction {
   type: CategoryTypeKeys.CATEGORY_LOAD;
+  categories: Array<CategoryI>;
 }
+
+export const categoryLoadActions = createAction(
+  CategoryTypeKeys.CATEGORY_LOAD, 
+  async () => ({
+    type: CategoryTypeKeys.CATEGORY_LOAD,
+    categories: await axios
+      .get('http://localhost:7777/category')
+      .then(res => res.data),
+  })
+);
 
 export interface CategoryAddAction {
   type: CategoryTypeKeys.CATEGORY_ADD;
