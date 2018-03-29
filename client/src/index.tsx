@@ -4,8 +4,13 @@ import { Provider } from 'react-redux';
 import 'font-awesome/css/font-awesome.css';
 import App from './components/App/index';
 import store from './store';
+import { categoryLoadAction } from './actions/categoryActions';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
+
+store.dispatch(
+  categoryLoadAction()
+);
 
 ReactDOM.render(
   <Provider store={store}>

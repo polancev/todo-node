@@ -1,52 +1,42 @@
-import axios from 'axios';
-// import { createAction } from 'typesafe-actions';
-import { createAction } from 'redux-actions';
+// import { PromiseAction } from 'redux';
 import { CategoryI } from '../types/Category';
 
 export enum CategoryTypeKeys {
-  CATEGORY_LOAD   = 'CATEGORY_LOAD',
-  CATEGORY_ADD    = 'CATEGORY_ADD',
-  CATEGORY_DELETE = 'CATEGORY_DELETE',
-  CATEGORY_UPDATE = 'CATEGORY_UPDATE',
-  CATEGORY_TOGGLE = 'CATEGORY_TOGGLE',
+  LOAD   = 'CATEGORY_LOAD',
+  ADD    = 'CATEGORY_ADD',
+  DELETE = 'CATEGORY_DELETE',
+  UPDATE = 'CATEGORY_UPDATE',
+  TOGGLE = 'CATEGORY_TOGGLE',
 }
 
-export interface CategoryLoadAction {
-  type: CategoryTypeKeys.CATEGORY_LOAD;
-  categories: Array<CategoryI>;
+export interface CategoryLoadAction<T> {
+  type: CategoryTypeKeys.LOAD;
+  payload: T;
+  error?: boolean;
+  meta?: CategoryI;
 }
-
-export const categoryLoadActions = createAction(
-  CategoryTypeKeys.CATEGORY_LOAD, 
-  async () => ({
-    type: CategoryTypeKeys.CATEGORY_LOAD,
-    categories: await axios
-      .get('http://localhost:7777/category')
-      .then(res => res.data),
-  })
-);
 
 export interface CategoryAddAction {
-  type: CategoryTypeKeys.CATEGORY_ADD;
+  type: CategoryTypeKeys.ADD;
   name: string;
 }
 
 export interface CategoryDeleteAction {
-  type: CategoryTypeKeys.CATEGORY_DELETE;
+  type: CategoryTypeKeys.DELETE;
 }
 
 export interface CategoryUpdateAction {
-  type: CategoryTypeKeys.CATEGORY_UPDATE;
+  type: CategoryTypeKeys.UPDATE;
 }
 
 export interface CategoryToggleAction {
-  type: CategoryTypeKeys.CATEGORY_TOGGLE;
+  type: CategoryTypeKeys.TOGGLE;
   id: string;
   toggle: boolean;
 }
 
 export type CategoryActionTypes =
-  | CategoryLoadAction
+  | CategoryLoadAction<CategoryI[]>
   | CategoryAddAction
   | CategoryDeleteAction
   | CategoryUpdateAction

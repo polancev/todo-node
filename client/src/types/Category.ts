@@ -4,3 +4,10 @@ export interface CategoryI {
   parent: CategoryI | null;
   timestamp: Date;
 }
+
+export type Category = {
+  name: string;
+  isOpen: boolean;
+  parent: CategoryI | null;
+  timestamp: Date;
+};
