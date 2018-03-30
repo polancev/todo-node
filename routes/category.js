@@ -12,10 +12,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:parent', async (req, res) => {
   try {
-    const { id } = req.params;
-    const categories = await Category.findById(id);
+    let { parent } = req.params;
+    parent = parent === 'null' ? null : parent;
+    const categories = await Category.find({ parent });
     res.send(categories);
   } catch (error) {
     res.status(500).send(error.toString());

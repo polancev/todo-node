@@ -1,4 +1,3 @@
-// import { PromiseAction } from 'redux';
 import { CategoryI } from '../types/Category';
 
 export enum CategoryTypeKeys {
@@ -9,9 +8,9 @@ export enum CategoryTypeKeys {
   TOGGLE = 'CATEGORY_TOGGLE',
 }
 
-export interface CategoryLoadAction<T> {
+export interface CategoryLoadAction {
   type: CategoryTypeKeys.LOAD;
-  payload: T;
+  payload: CategoryI[];
   error?: boolean;
   meta?: CategoryI;
 }
@@ -36,7 +35,7 @@ export interface CategoryToggleAction {
 }
 
 export type CategoryActionTypes =
-  | CategoryLoadAction<CategoryI[]>
+  | CategoryLoadAction
   | CategoryAddAction
   | CategoryDeleteAction
   | CategoryUpdateAction

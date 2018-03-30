@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import axios from 'axios';
 import './index.css';
-import ListView from '../../routes/ListView';
+import ListView from '../../pages/ListView';
 import { CategoryI } from '../../types/Category';
 import { TodoI } from '../../types/Todo';
 
@@ -24,18 +24,12 @@ class App extends React.Component {
     };
   }
 
-  // getCategories = () => {
-  //   axios
-  //     .get('http://localhost:7777/category')
-  //     .then(res => res.data)
-  //     .then(categories => this.setState({ categories })); 
-  // }
-
   render() {
     return (
       <BrowserRouter>
         <Switch>
           <Route path="/" component={ListView} />
+          <Route path="/:category" component={ListView} />
         </Switch>
       </BrowserRouter>
     );
