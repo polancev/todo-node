@@ -1,4 +1,5 @@
 import { CategoriesState } from '../types/State';
+import { CategoryI } from '../types/Category';
 import { 
   CategoryTypeKeys,
   CategoryLoadAction,
@@ -19,19 +20,21 @@ export default handleActions(
         error: action.payload,
       }),
     },
-    [CategoryTypeKeys.TOGGLE]: (state, action: CategoryToggleAction) => ({
+    [CategoryTypeKeys.TOGGLE]: (state: CategoriesState, action: CategoryToggleAction) => ({
       ...state,
-      categories: state.categories.list.map(category => {
+      categories: state.list.map(category => {
         if (category._id === action.id) {
           return {
             ...category,
-            toggle
-          }
+            toggle: action.toggle,
+          };
+        } else {
+          return category;
         }
       }),
     })
   }, 
   {
-    categories: [],
+    list: new Array<CategoryI>(),
   }
 );
