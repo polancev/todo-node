@@ -40,7 +40,7 @@ class CategoryContainer extends React.Component<StateProps & DispatchProps & Sel
 }
 
 const ConnectedCategoryContainer
-  : InferableComponentEnhancerWithProps<StateProps & DispatchProps, SelfProps>
+  :InferableComponentEnhancerWithProps<{ list: CategoryI[]; }, {}>
   = connect(mapStateToProps, {
 })(CategoryContainer);
 

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find({}) || [];
     res.send(categories);
   } catch (error) {
     res.status(500).send(error.toString());
@@ -16,7 +16,7 @@ router.get('/:parent', async (req, res) => {
   try {
     let { parent } = req.params;
     parent = parent === 'null' ? null : parent;
-    const categories = await Category.find({ parent });
+    const categories = await Category.find({ parent }) || [];
     res.send(categories);
   } catch (error) {
     res.status(500).send(error.toString());

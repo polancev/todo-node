@@ -11,11 +11,11 @@ import { handleActions } from 'redux-actions';
 export default handleActions(
   {
     [CategoryTypeKeys.LOAD]: {
-      next: (state, action: CategoryLoadAction) => ({
+      next: (state: CategoriesState, action: CategoryLoadAction) => ({
         ...state,
         list: action.payload,
       }),
-      throw: (state, action: CategoryLoadAction) => ({
+      throw: (state: CategoriesState, action: CategoryLoadAction) => ({
         ...state,
         error: action.payload,
       }),
@@ -28,9 +28,8 @@ export default handleActions(
             ...category,
             toggle: action.toggle,
           };
-        } else {
-          return category;
-        }
+        } 
+        return category;
       }),
     })
   }, 
