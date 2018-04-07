@@ -1,7 +1,12 @@
 import { handleActions } from 'redux-actions';
 import { TypeKeys } from '../actions/CategoryActions';
 
-const defaultState = {};
+const defaultState = {
+  list: [],
+  editOpen: false,
+  editCategory: null,
+};
+
 export default handleActions({
   [TypeKeys.LOAD]: {
     next: (state, action) => ({
@@ -13,16 +18,39 @@ export default handleActions({
       error: action.payload,
     }),
   },
-  [TypeKeys]: (state, action) => ({
+  [TypeKeys.TOGGLE]: (state, action) => ({
     ...state,
     list: state.list.map((category) => {
-      if (category._id === action._id) {
+      if (category._id === action.payload.id) {
         return {
           ...category,
-          toggle: action.toggle,
+          isOpen: action.payload.isOpen,
         };
       }
       return category;
     }),
+  }),
+  [TypeKeys.EDIT_START]: (state, action) => ({
+    ...state,
+    editOpen: true,
+    editCategory: action.payload.category,
+  }),
+  [TypeKeys.EDIT_END]: (state, action) => ({
+    ...state,
+    editOpen: false,
+    editCategory: null,
+    list: state.list.map((category) => {
+      if (category._id === action.payload.catergory._id) {
+        return {
+          category: action.payload.category,
+        };
+      }
+      return category;
+    }),
+  }),
+  [TypeKeys.EDIT_CANCEL]: state => ({
+    ...state,
+    editOpen: false,
+    editCategory: null,
   }),
 }, defaultState);
