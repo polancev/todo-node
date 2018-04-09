@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SimpleButton from '../SimpleButton/index';
+import Button from '../Button/index';
 
 class EditDialog extends React.Component {
   constructor(props) {
@@ -13,20 +13,28 @@ class EditDialog extends React.Component {
     this.textInput.current.focus();
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.onSubmit(this.textInput.current.value);
+  }
+
   render() {
-    const { title, onSubmit, onReset } = this.props;
+    const { title, onReset } = this.props;
     return (
-      <div className="edit-dialog">
+      <form
+        className="edit-dialog"
+        onSubmit={this.handleSubmit}
+        onReset={onReset}>
         <h3>{title}</h3>
         <input
           type="text"
           ref={this.textInput}
         />
         <div className="edit-dialog__buttons">
-          <SimpleButton onClick={onSubmit}>Save</SimpleButton>
-          <SimpleButton onClick={onReset}>Cancel</SimpleButton>
+          <Button type="submit">Save</Button>
+          <Button type="reset">Cancel</Button>
         </div>
-      </div>
+      </form>
     );
   }
 }

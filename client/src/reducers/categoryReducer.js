@@ -40,10 +40,8 @@ export default handleActions({
     editOpen: false,
     editCategory: null,
     list: state.list.map((category) => {
-      if (category._id === action.payload.catergory._id) {
-        return {
-          category: action.payload.category,
-        };
+      if (category._id === action.payload.category._id) {
+        return action.payload.category;
       }
       return category;
     }),

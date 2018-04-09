@@ -11,7 +11,8 @@ const Category = ({
     <span>{category.name}</span>
     {(mode === 'edit') && (
       <div>
-        <IconButton type="edit" onClick={() => onEdit()} />
+        <IconButton type="edit" onClick={() => onEdit(category)} />
+        <IconButton type="delete" onClick={this.toggleConfirm} />
       </div>)
     }
   </span>
