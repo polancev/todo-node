@@ -1,9 +1,10 @@
 import React from 'react';
+import Header from '../components/Header';
 import CategoryListContainer from '../containers/CategoryListContainer/index';
 
 const ListView = () => (
   <div className="app">
-    <h1>List view</h1>
+    <Header title="To-Do List" />
     <div className="container">
       <div className="left-panel">
         <CategoryListContainer
@@ -12,7 +13,7 @@ const ListView = () => (
         />
       </div>
       <div className="right-panel">
-          Right panel
+        <span>Right panel</span>
       </div>
     </div>
   </div>

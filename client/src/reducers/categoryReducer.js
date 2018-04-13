@@ -1,8 +1,11 @@
 import { handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 import { TypeKeys } from '../actions/CategoryActions';
 
-const defaultState = {
-  list: [],
+const initialState = {
+  // list: [],
+  // entities: {},
+  categories: [],
   editOpen: false,
   editCategory: null,
 };
@@ -11,7 +14,15 @@ export default handleActions({
   [TypeKeys.LOAD]: {
     next: (state, action) => ({
       ...state,
-      list: action.payload,
+      categories: action.payload,
+      // list: action.payload.map(category => category._id),
+      // entities: action.payload.reduce(
+      //   (acc, category) => {
+      //     acc[category._id] = category;
+      //     return acc;
+      //   },
+      //   {},
+      // ),
     }),
     throw: (state, action) => ({
       ...state,
@@ -51,4 +62,18 @@ export default handleActions({
     editOpen: false,
     editCategory: null,
   }),
-}, defaultState);
+}, initialState);
+
+// Selectors: -------------------------------------------
+// https://github.com/pdffiller/selectors-samples/blob/sample-4-2/src/reducers/users.js
+
+const DONT_MEMORIZE = false;
+
+export const branch = state => state.categories;
+
+export const getCategoryListByParentCreator = () => createSelector(
+  [branch],
+  state => state.filter((category, parent) => category._id === parent),
+);
+
+export const getCategoryEntities = createSelector([branch], state => state.byId, DONT_MEMORIZE);

@@ -11,12 +11,6 @@ import Category from '../../components/Category/index';
 import Modal from '../../components/Modal';
 import EditDialog from '../../components/EditDialog';
 
-const mapStateToProps = state => ({
-  list: state.categories.list,
-  editOpen: state.categories.editOpen,
-  editCategory: state.categories.editCategory,
-});
-
 // const mapDispatchToProps = (dispatch) => null;
 
 const CategoryContainer = ({
@@ -50,10 +44,10 @@ const CategoryContainer = ({
       </ul>
       {editOpen &&
         <Modal>
-          <EditDialog 
-            title='edit category title'
+          <EditDialog
+            title="edit category title"
             initialValue={editCategory && editCategory.name}
-            onSubmit={(name) => onEditEnd({ ...editCategory, name })}
+            onSubmit={name => onEditEnd({ ...editCategory, name })}
             onReset={onEditCancel}
           />
         </Modal>
@@ -81,11 +75,19 @@ CategoryContainer.defaultProps = {
   editCategory: null,
 };
 
-const ConnectedCategoryContainer = connect(mapStateToProps, {
+const mapStateToProps = state => ({
+  list: state.categories.list,
+  editOpen: state.categories.editOpen,
+  editCategory: state.categories.editCategory,
+});
+
+const mapDispatchToProps = {
   onToggle: categoryToggle,
   onEditStart: categoryEditStart,
   onEditEnd: categoryEditEnd,
   onEditCancel: categoryEditCancel,
-})(CategoryContainer);
+};
+
+const ConnectedCategoryContainer = connect(mapStateToProps, mapDispatchToProps)(CategoryContainer);
 
 export default ConnectedCategoryContainer;
