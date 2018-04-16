@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { createAction } from 'redux-actions';
 
-const BASE_URL = 'http://localhost:7777';
-
 export const TypeKeys = {
-  LOAD: 'LOAD',
+  LOADING: 'LOADING',
+  LOAD_FINISHED: 'LOAD_FINISHED',
+  LOAD_FAILED: 'LOAD_FAILED',
   ADD: 'ADD',
   DELETE: 'DELETE',
   TOGGLE: 'TOGGLE',
@@ -13,16 +12,17 @@ export const TypeKeys = {
   EDIT_CANCEL: 'EDIT_CANCEL',
 };
 
-export const categoryLoad = createAction(
-  TypeKeys.LOAD,
-  async () => {
-    const { data } = await axios({
-      method: 'GET',
-      url: `${BASE_URL}/category/`,
-    });
-    return data;
-  },
-);
+const categoriesLoading = () => ({ type: TypeKeys.LOADING });
+const categoriesLoaded = categories => ({ type: TypeKeys.LOAD_FINISHED, payload: categories });
+const categoriesFailed = error => ({ type: TypeKeys.LOAD_FAILED, payload: error });
+
+export const categoryLoad = () => (dispatch, getState, api) => {
+  dispatch(categoriesLoading());
+  return new Promise(resolve => resolve({ type: TypeKeys.LOAD_FINISHED }));
+  // api.loadCategories()
+  //   .then(categories => dispatch(categoriesLoaded(categories)))
+  //   .catch(error => dispatch(categoriesFailed(error)));
+};
 
 export const categoryToggle = createAction(
   TypeKeys.TOGGLE,
