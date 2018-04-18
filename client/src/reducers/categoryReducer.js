@@ -3,9 +3,7 @@ import { createSelector } from 'reselect';
 import { TypeKeys } from '../actions/CategoryActions';
 
 const initialState = {
-  // list: [],
-  // entities: {},
-  categories: [],
+  list: [],
   editOpen: false,
   editCategory: null,
 };
@@ -15,7 +13,7 @@ export default (state = initialState, action) => {
     case TypeKeys.LOAD_FINISHED:
       return {
         ...state,
-        categories: action.payload,
+        list: action.payload,
       };
     default:
       return state;
@@ -79,13 +77,20 @@ export default (state = initialState, action) => {
 // Selectors: -------------------------------------------
 // https://github.com/pdffiller/selectors-samples/blob/sample-4-2/src/reducers/users.js
 
-const DONT_MEMORIZE = false;
+const MEMORIZE = false;
 
-export const branch = state => state.categories;
+export const categoriesSelector = state => state.categories.list;
+export const parentSelector = (state, props) => props.parent || null;
 
-export const getCategoryListByParentCreator = () => createSelector(
-  [branch],
-  state => state.filter((category, parent) => category._id === parent),
+export const categoriesByParentCreator = () => (
+  createSelector(
+    [categoriesSelector, parentSelector],
+    (list, parent) => list.filter(category => category.parent === parent),
+  )
 );
 
-export const getCategoryEntities = createSelector([branch], state => state.byId, DONT_MEMORIZE);
+export const getCategoryEntities = createSelector(
+  categoriesSelector,
+  state => state.byId,
+  MEMORIZE,
+);

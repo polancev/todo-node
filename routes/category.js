@@ -3,10 +3,17 @@ const Category = require('../models/category');
 
 const router = express.Router();
 
+const convertToId = (item) => {
+  const itemWithId = Object.assign({}, item.toObject(), { id: item._id });
+  delete itemWithId._id;
+  return itemWithId;
+};
+
 router.get('/', async (req, res) => {
   try {
     const categories = await Category.find({}) || [];
-    res.send(categories);
+    const categoriesWithIds = categories.map(convertToId);
+    res.send(categoriesWithIds);
   } catch (error) {
     res.status(500).send(error.toString());
   }

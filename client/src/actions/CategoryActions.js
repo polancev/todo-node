@@ -18,10 +18,9 @@ const categoriesFailed = error => ({ type: TypeKeys.LOAD_FAILED, payload: error 
 
 export const categoryLoad = () => (dispatch, getState, api) => {
   dispatch(categoriesLoading());
-  return new Promise(resolve => resolve({ type: TypeKeys.LOAD_FINISHED }));
-  // api.loadCategories()
-  //   .then(categories => dispatch(categoriesLoaded(categories)))
-  //   .catch(error => dispatch(categoriesFailed(error)));
+  api.loadCategories()
+    .then(categories => dispatch(categoriesLoaded(categories)))
+    .catch(error => dispatch(categoriesFailed(error)));
 };
 
 export const categoryToggle = createAction(
