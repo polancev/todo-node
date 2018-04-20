@@ -7,39 +7,60 @@ import { Categories } from '../../reducers';
 import Category from '../../components/Category';
 import Modal from '../../components/Modal';
 import EditDialog from '../../components/EditDialog';
+import ConfirmDialog from '../../components/ConfirmDialog';
+
+const propTypes = {
+  mode: PropTypes.oneOf(['edit', 'view']).isRequired,
+  list: PropTypes.arrayOf(PropTypes.instanceOf(Object)),
+  editOpen: PropTypes.bool,
+  editCategory: PropTypes.instanceOf(Object),
+  deleteOpen: PropTypes.bool,
+  onToggle: PropTypes.func.isRequired,
+  onEditStart: PropTypes.func.isRequired,
+  onEditEnd: PropTypes.func.isRequired,
+  onEditCancel: PropTypes.func.isRequired,
+  onDeleteStart: PropTypes.func.isRequired,
+  onDeleteEnd: PropTypes.func.isRequired,
+  onDeleteCancel: PropTypes.func.isRequired,
+};
+
+const defaultProps = {
+  list: [],
+  editOpen: false,
+  editCategory: null,
+  deleteOpen: false,
+};
 
 
 const CategoryContainer = ({
-  list, editOpen, editCategory, mode, onToggle, onEditStart, onEditEnd, onEditCancel,
-}) => {
-  // const filtredlist = list.filter(category => category.parent === parent);
-  // if (!filtredlist.length) {
-  //   return null;
-  // }
-  console.log(list);
-  return (
-    <div>
-      <ul>
-        {list.map(category => (
-          <li key={category._id} className="category_list-item">
-            <Category
-              category={category}
-              onToggle={onToggle}
-              onEdit={onEditStart}
-              mode={mode}
-            />
-            {category.isOpen &&
+  list, mode,
+  editOpen, editCategory, deleteOpen,
+  onToggle,
+  onEditStart, onEditEnd, onEditCancel,
+  onDeleteStart, onDeleteEnd, onDeleteCancel,
+}) => (
+  <div>
+    <ul>
+      {list.map(category => (
+        <li key={category.id} className="category_list-item">
+          <Category
+            category={category}
+            onToggle={onToggle}
+            onEdit={onEditStart}
+            onDelete={onDeleteStart}
+            mode={mode}
+          />
+          {category.isOpen &&
             <div className="embedded-list">
               <ConnectedCategoryContainer
-                parent={category._id}
+                parent={category.id}
                 mode={mode}
               />
-            </div>
-            }
-          </li>
+            </div>}
+        </li>
         ))}
-      </ul>
-      {editOpen &&
+    </ul>
+    {editOpen &&
       <Modal>
         <EditDialog
           title="edit category title"
@@ -47,28 +68,20 @@ const CategoryContainer = ({
           onSubmit={name => onEditEnd({ ...editCategory, name })}
           onReset={onEditCancel}
         />
-      </Modal>
-      }
-    </div>
-  );
-};
-CategoryContainer.propTypes = {
-  mode: PropTypes.oneOf(['edit', 'view']).isRequired,
-  // parent: PropTypes.oneOfType([PropTypes.string]).isRequired,
-  list: PropTypes.arrayOf(PropTypes.instanceOf(Object)),
-  editOpen: PropTypes.bool,
-  editCategory: PropTypes.instanceOf(Object),
-  onToggle: PropTypes.func.isRequired,
-  onEditStart: PropTypes.func.isRequired,
-  onEditEnd: PropTypes.func.isRequired,
-  onEditCancel: PropTypes.func.isRequired,
-};
+      </Modal>}
+    {deleteOpen &&
+      <Modal>
+        <ConfirmDialog
+          title="Are you sure you want to delete this category?"
+          onSubmit={onDeleteEnd}
+          onReset={onDeleteCancel}
+        />
+      </Modal>}
+  </div>
+);
 
-CategoryContainer.defaultProps = {
-  list: [],
-  editOpen: false,
-  editCategory: null,
-};
+CategoryContainer.propTypes = propTypes;
+CategoryContainer.defaultProps = defaultProps;
 
 const mapStateToProps = () => {
   const getCategories = Categories.categoriesByParentCreator();
@@ -76,6 +89,7 @@ const mapStateToProps = () => {
     list: getCategories(state, props),
     editOpen: state.categories.editOpen,
     editCategory: state.categories.editCategory,
+    deleteOpen: state.categories.deleteOpen,
   });
 };
 
@@ -84,6 +98,9 @@ const mapDispatchToProps = {
   onEditStart: actions.categoryEditStart,
   onEditEnd: actions.categoryEditEnd,
   onEditCancel: actions.categoryEditCancel,
+  onDeleteStart: actions.categoryDeleteStart,
+  onDeleteEnd: actions.categoryDeleteEnd,
+  onDeleteCancel: actions.categoryDeleteCancel,
 };
 
 // const mapDispatchToProps = (dispatch) => null;

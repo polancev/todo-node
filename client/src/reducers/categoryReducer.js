@@ -6,6 +6,8 @@ const initialState = {
   list: [],
   editOpen: false,
   editCategory: null,
+  deleteOpen: false,
+  deleteCategory: null,
 };
 
 export default (state = initialState, action) => {
@@ -15,64 +17,60 @@ export default (state = initialState, action) => {
         ...state,
         list: action.payload,
       };
+    case TypeKeys.TOGGLE:
+      return ({
+        ...state,
+        list: state.list.map(category => (
+          category.id === action.payload.id
+            ? {
+              ...category,
+              isOpen: action.payload.isOpen,
+            }
+            : category)),
+      });
+    case TypeKeys.EDIT_START:
+      return ({
+        ...state,
+        editOpen: true,
+        editCategory: action.payload.category,
+      });
+    case TypeKeys.EDIT_END:
+      return ({
+        ...state,
+        editOpen: false,
+        editCategory: null,
+        list: state.list.map(category => (
+          category.id === action.payload.category.id
+            ? action.payload.category
+            : category
+        )),
+      });
+    case TypeKeys.DELETE_START:
+      return ({
+        ...state,
+        deleteOpen: true,
+        deleteCategory: action.payload.id,
+      });
+    case TypeKeys.DELETE_END:
+      return ({
+        ...state,
+        deleteOpen: false,
+        deleteCategory: null,
+        list: state.list.filter(category => (
+          category.id !== state.deleteCategory
+        )),
+      });
+    case TypeKeys.DELETE_CANCEL:
+      return ({
+        ...state,
+        deleteOpen: false,
+        deleteCategory: null,
+      });
     default:
       return state;
   }
 };
 
-// export handleActions({
-//   [TypeKeys.LOAD]: {
-//     next: (state, action) => ({
-//       ...state,
-//       categories: action.payload,
-//       // list: action.payload.map(category => category._id),
-//       // entities: action.payload.reduce(
-//       //   (acc, category) => {
-//       //     acc[category._id] = category;
-//       //     return acc;
-//       //   },
-//       //   {},
-//       // ),
-//     }),
-//     throw: (state, action) => ({
-//       ...state,
-//       error: action.payload,
-//     }),
-//   },
-//   [TypeKeys.TOGGLE]: (state, action) => ({
-//     ...state,
-//     list: state.list.map((category) => {
-//       if (category._id === action.payload.id) {
-//         return {
-//           ...category,
-//           isOpen: action.payload.isOpen,
-//         };
-//       }
-//       return category;
-//     }),
-//   }),
-//   [TypeKeys.EDIT_START]: (state, action) => ({
-//     ...state,
-//     editOpen: true,
-//     editCategory: action.payload.category,
-//   }),
-//   [TypeKeys.EDIT_END]: (state, action) => ({
-//     ...state,
-//     editOpen: false,
-//     editCategory: null,
-//     list: state.list.map((category) => {
-//       if (category._id === action.payload.category._id) {
-//         return action.payload.category;
-//       }
-//       return category;
-//     }),
-//   }),
-//   [TypeKeys.EDIT_CANCEL]: state => ({
-//     ...state,
-//     editOpen: false,
-//     editCategory: null,
-//   }),
-// }, initialState);
 
 // Selectors: -------------------------------------------
 // https://github.com/pdffiller/selectors-samples/blob/sample-4-2/src/reducers/users.js

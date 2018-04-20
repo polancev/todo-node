@@ -1,11 +1,11 @@
-import { createAction } from 'redux-actions';
-
 export const TypeKeys = {
   LOADING: 'LOADING',
   LOAD_FINISHED: 'LOAD_FINISHED',
   LOAD_FAILED: 'LOAD_FAILED',
   ADD: 'ADD',
-  DELETE: 'DELETE',
+  DELETE_START: 'DELETE_START',
+  DELETE_END: 'DELETE_END',
+  DELETE_CANCEL: 'DELETE_CANCEL',
   TOGGLE: 'TOGGLE',
   EDIT_START: 'EDIT_START',
   EDIT_END: 'EDIT_END',
@@ -23,22 +23,12 @@ export const categoryLoad = () => (dispatch, getState, api) => {
     .catch(error => dispatch(categoriesFailed(error)));
 };
 
-export const categoryToggle = createAction(
-  TypeKeys.TOGGLE,
-  (id, isOpen) => ({
-    id,
-    isOpen,
-  }),
-);
+export const categoryToggle = (id, isOpen) => ({ type: TypeKeys.TOGGLE, payload: { id, isOpen } });
 
-export const categoryEditStart = createAction(
-  TypeKeys.EDIT_START,
-  category => ({ category }),
-);
+export const categoryEditStart = category => ({ type: TypeKeys.EDIT_START, payload: { category } });
+export const categoryEditEnd = category => ({ type: TypeKeys.EDIT_END, payload: { category } });
+export const categoryEditCancel = () => ({ type: TypeKeys.EDIT_CANCEL });
 
-export const categoryEditEnd = createAction(
-  TypeKeys.EDIT_END,
-  category => ({ category }),
-);
-
-export const categoryEditCancel = createAction(TypeKeys.EDIT_CANCEL);
+export const categoryDeleteStart = id => ({ type: TypeKeys.DELETE_START, payload: { id } });
+export const categoryDeleteEnd = () => ({ type: TypeKeys.DELETE_END });
+export const categoryDeleteCancel = () => ({ type: TypeKeys.DELETE_CANCEL });

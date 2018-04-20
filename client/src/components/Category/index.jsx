@@ -4,25 +4,26 @@ import IconButton from '../IconButton/index';
 import './index.css';
 
 const Category = ({
-  category, onToggle, onEdit, mode,
+  category, onToggle, onEdit, onDelete, mode,
 }) => (
   <span className="category">
-    <IconButton type={category.isOpen ? 'up' : 'down'} onClick={() => onToggle(category._id, !category.isOpen)} />
+    <IconButton type={category.isOpen ? 'up' : 'down'} onClick={() => onToggle(category.id, !category.isOpen)} />
     <span>{category.name}</span>
     {(mode === 'edit') && (
       <div>
         <IconButton type="edit" onClick={() => onEdit(category)} />
-        <IconButton type="delete" onClick={this.toggleConfirm} />
+        <IconButton type="delete" onClick={() => onDelete(category.id)} />
       </div>)
     }
   </span>
 );
 
 Category.propTypes = {
-  category: PropTypes.shape().isRequired,
+  category: PropTypes.instanceOf(Object).isRequired,
+  mode: PropTypes.oneOf(['edit', 'view']).isRequired,
   onToggle: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
-  mode: PropTypes.oneOf(['edit', 'view']).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default Category;
