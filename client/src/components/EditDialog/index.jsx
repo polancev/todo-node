@@ -18,13 +18,19 @@ class EditDialog extends React.Component {
     this.props.onSubmit(this.textInput.current.value);
   }
 
+  handleReset = (event) => {
+    event.preventDefault();
+    this.props.onReset();
+  }
+
   render() {
-    const { title, onReset } = this.props;
+    const { title } = this.props;
     return (
       <form
         className="edit-dialog"
         onSubmit={this.handleSubmit}
-        onReset={onReset}>
+        onReset={this.handleReset}
+      >
         <h3>{title}</h3>
         <input
           type="text"

@@ -26,7 +26,7 @@ export const categoryLoad = () => (dispatch, getState, api) => {
 export const categoryToggle = (id, isOpen) => ({ type: TypeKeys.TOGGLE, payload: { id, isOpen } });
 
 export const categoryEditStart = category => ({ type: TypeKeys.EDIT_START, payload: { category } });
-export const categoryEditEnd = category => ({ type: TypeKeys.EDIT_END, payload: { category } });
+export const categoryEditEnd = name => ({ type: TypeKeys.EDIT_END, payload: { name } });
 export const categoryEditCancel = () => ({ type: TypeKeys.EDIT_CANCEL });
 
 export const categoryDeleteStart = id => ({ type: TypeKeys.DELETE_START, payload: { id } });

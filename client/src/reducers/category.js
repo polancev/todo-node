@@ -1,5 +1,6 @@
 // import { handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+
 import { TypeKeys } from '../actions/CategoryActions';
 
 const initialState = {
@@ -40,10 +41,16 @@ export default (state = initialState, action) => {
         editOpen: false,
         editCategory: null,
         list: state.list.map(category => (
-          category.id === action.payload.category.id
-            ? action.payload.category
+          category.id === state.editCategory.id
+            ? { ...state.editCategory, name: action.payload.name }
             : category
         )),
+      });
+    case TypeKeys.EDIT_CANCEL:
+      return ({
+        ...state,
+        editOpen: false,
+        editCategory: null,
       });
     case TypeKeys.DELETE_START:
       return ({
@@ -77,18 +84,26 @@ export default (state = initialState, action) => {
 
 const MEMORIZE = false;
 
-export const categoriesSelector = state => state.categories.list;
+export const branch = state => state.categories.list;
 export const parentSelector = (state, props) => props.parent || null;
+export const categoryIdSelector = (state, props) => props.categoryId;
 
-export const categoriesByParentCreator = () => (
+export const categorySelectorCreator = () => (
   createSelector(
-    [categoriesSelector, parentSelector],
+    [branch, categoryIdSelector],
+    (list, categoryId) => list.find(category => category.id === categoryId),
+  )
+);
+
+export const categoriesByParentSelectorCreator = () => (
+  createSelector(
+    [branch, parentSelector],
     (list, parent) => list.filter(category => category.parent === parent),
   )
 );
 
 export const getCategoryEntities = createSelector(
-  categoriesSelector,
+  branch,
   state => state.byId,
   MEMORIZE,
 );

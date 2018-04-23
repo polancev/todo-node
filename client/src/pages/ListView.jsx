@@ -7,7 +7,7 @@ const ListView = () => (
     <Header title="To-Do List" />
     <div className="container">
       <div className="left-panel">
-        <CategoryListContainer mode="edit" />
+        <CategoryListContainer />
       </div>
       <div className="right-panel">
         <span>Right panel</span>
