@@ -17,6 +17,7 @@ const propTypes = {
   editOpen: PropTypes.bool,
   editCategory: PropTypes.instanceOf(Object),
   deleteOpen: PropTypes.bool,
+  addOpen: PropTypes.bool,
   onToggle: PropTypes.func.isRequired,
   onEditStart: PropTypes.func.isRequired,
   onEditEnd: PropTypes.func.isRequired,
@@ -24,6 +25,9 @@ const propTypes = {
   onDeleteStart: PropTypes.func.isRequired,
   onDeleteEnd: PropTypes.func.isRequired,
   onDeleteCancel: PropTypes.func.isRequired,
+  onAddStart: PropTypes.func.isRequired,
+  onAddEnd: PropTypes.func.isRequired,
+  onAddCancel: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -38,6 +42,7 @@ const CategoryItem = ({
   onToggle,
   onEditStart, onEditEnd, onEditCancel, editOpen, editCategory,
   onDeleteStart, onDeleteEnd, onDeleteCancel, deleteOpen,
+  onAddStart, onAddEnd, onAddCancel, addOpen,
 }) => (
   <div>
     <span className="category">
@@ -48,6 +53,7 @@ const CategoryItem = ({
       <span>{category.name}</span>
       {editMode && (
         <div>
+          <IconButton type="add" onClick={() => onAddStart(category)} />
           <IconButton type="edit" onClick={() => onEditStart(category)} />
           <IconButton type="delete" onClick={() => onDeleteStart(category.id)} />
         </div>)
@@ -57,10 +63,18 @@ const CategoryItem = ({
       <div className="embedded-list">
         <CategoryListContainer parent={category.id} />
       </div>}
+    {addOpen &&
+      <Modal>
+        <EditDialog
+          title="Enter category name"
+          onSubmit={name => onAddEnd(category.id, name, Date.now())}
+          onReset={onAddCancel}
+        />
+      </Modal>}
     {editOpen &&
       <Modal>
         <EditDialog
-          title="edit category title"
+          title="Edit category name"
           initialValue={editCategory && editCategory.name}
           onSubmit={onEditEnd}
           onReset={onEditCancel}
@@ -70,7 +84,7 @@ const CategoryItem = ({
       <Modal>
         <ConfirmDialog
           title="Are you sure you want to delete this category?"
-          onSubmit={onDeleteEnd}
+          onSubmit={() => { console.log(category); onDeleteEnd(category.id); }}
           onReset={onDeleteCancel}
         />
       </Modal>}
@@ -88,6 +102,7 @@ const mapStateToProps = () => (state, props) => {
     editOpen: state.categories.editOpen,
     editCategory: state.categories.editCategory,
     deleteOpen: state.categories.deleteOpen,
+    addOpen: state.categories.addOpen,
   });
 };
 
@@ -99,6 +114,9 @@ const mapDispatchToProps = {
   onDeleteStart: actions.categoryDeleteStart,
   onDeleteEnd: actions.categoryDeleteEnd,
   onDeleteCancel: actions.categoryDeleteCancel,
+  onAddStart: actions.categoryAddStart,
+  onAddEnd: actions.categoryAddEnd,
+  onAddCancel: actions.categoryAddCancel,
 };
 
 const ConnectedCategoryItem = connect(

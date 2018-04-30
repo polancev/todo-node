@@ -9,6 +9,7 @@ const initialState = {
   editCategory: null,
   deleteOpen: false,
   deleteCategory: null,
+  addOpen: false,
 };
 
 export default (state = initialState, action) => {
@@ -28,6 +29,38 @@ export default (state = initialState, action) => {
               isOpen: action.payload.isOpen,
             }
             : category)),
+      });
+    case TypeKeys.ADD_START:
+      return ({
+        ...state,
+        addOpen: true,
+      });
+    case TypeKeys.ADD_CANCEL:
+      return ({
+        ...state,
+        addOpen: false,
+      });
+    case TypeKeys.ADD_END:
+      return ({
+        ...state,
+        addOpen: false,
+        list: [
+          ...state.list.map((category) => {
+            if (category.id === action.payload.parent) {
+              return ({
+                ...category, isOpen: true,
+              });
+            }
+            return category;
+          }),
+          {
+            id: action.payload.id,
+            isOpen: false,
+            name: action.payload.name,
+            parent: action.payload.parent,
+            timestamp: new Date(),
+          },
+        ],
       });
     case TypeKeys.EDIT_START:
       return ({

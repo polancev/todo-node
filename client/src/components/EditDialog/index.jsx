@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button/index';
+import './index.css';
 
 class EditDialog extends React.Component {
   constructor(props) {
@@ -31,14 +32,15 @@ class EditDialog extends React.Component {
         onSubmit={this.handleSubmit}
         onReset={this.handleReset}
       >
-        <h3>{title}</h3>
-        <input
-          type="text"
-          ref={this.textInput}
-        />
+        <div className="edit-dialog__title">{title}</div>
+        <input type="text" ref={this.textInput} />
         <div className="edit-dialog__buttons">
-          <Button type="submit">Save</Button>
-          <Button type="reset">Cancel</Button>
+          <div className="edit-dialog__submit">
+            <Button type="submit">Save</Button>
+          </div>
+          <div className="edit-dialog__reset">
+            <Button type="reset">Cancel</Button>
+          </div>
         </div>
       </form>
     );

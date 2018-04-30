@@ -10,6 +10,9 @@ export const TypeKeys = {
   EDIT_START: 'EDIT_START',
   EDIT_END: 'EDIT_END',
   EDIT_CANCEL: 'EDIT_CANCEL',
+  ADD_START: 'ADD_START',
+  ADD_END: 'ADD_END',
+  ADD_CANCEL: 'ADD_CANCEL',
 };
 
 const categoriesLoading = () => ({ type: TypeKeys.LOADING });
@@ -30,5 +33,12 @@ export const categoryEditEnd = name => ({ type: TypeKeys.EDIT_END, payload: { na
 export const categoryEditCancel = () => ({ type: TypeKeys.EDIT_CANCEL });
 
 export const categoryDeleteStart = id => ({ type: TypeKeys.DELETE_START, payload: { id } });
-export const categoryDeleteEnd = () => ({ type: TypeKeys.DELETE_END });
+export const categoryDeleteEnd = id => ({ type: TypeKeys.DELETE_END, payload: { id } });
 export const categoryDeleteCancel = () => ({ type: TypeKeys.DELETE_CANCEL });
+
+export const categoryAddStart = () => ({ type: TypeKeys.ADD_START });
+export const categoryAddEnd = (parent, name, id) => ({
+  type: TypeKeys.ADD_END,
+  payload: { parent, name, id },
+});
+export const categoryAddCancel = () => ({ type: TypeKeys.ADD_CANCEL });
