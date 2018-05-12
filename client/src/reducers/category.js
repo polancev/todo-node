@@ -97,7 +97,8 @@ export default (state = initialState, action) => {
         deleteOpen: false,
         deleteCategory: null,
         list: state.list.filter(category => (
-          category.id !== state.deleteCategory
+          // category.id !== state.deleteCategory
+          category.id !== action.payload.id
         )),
       });
     case TypeKeys.DELETE_CANCEL:

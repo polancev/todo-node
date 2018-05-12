@@ -17,7 +17,7 @@ const propTypes = {
   editOpen: PropTypes.bool,
   editCategory: PropTypes.instanceOf(Object),
   deleteOpen: PropTypes.bool,
-  addOpen: PropTypes.bool,
+  addOpen: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
   onEditStart: PropTypes.func.isRequired,
   onEditEnd: PropTypes.func.isRequired,
